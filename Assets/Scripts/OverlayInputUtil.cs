@@ -199,6 +199,34 @@ namespace OverlayInputUtil
             {'Y', "y"},
             {'Z', "z"}
         };
+
+        // A tap on ゛゜小 turns the last kana into its next form and wraps round (は → ば → ぱ → は).
+        // The cycles are polykey's packs/ja/modify.json (MIT); katakana use the same cycles.
+        private static readonly string[] modifyCycles =
+        {
+            "あぁ", "いぃ", "うぅゔ", "えぇ", "おぉ",
+            "かが", "きぎ", "くぐ", "けげ", "こご",
+            "さざ", "しじ", "すず", "せぜ", "そぞ",
+            "ただ", "ちぢ", "つっづ", "てで", "とど",
+            "はばぱ", "ひびぴ", "ふぶぷ", "へべぺ", "ほぼぽ",
+            "やゃ", "ゆゅ", "よょ", "わゎ"
+        };
+
+        public static Dictionary<char, char> modifyCycleDictionary = BuildModifyCycles();
+
+        private static Dictionary<char, char> BuildModifyCycles()
+        {
+            var table = new Dictionary<char, char>();
+            foreach(var cycle in modifyCycles)
+            {
+                foreach(var offset in new[] { 0, 0x60 }) // hiragana, then the same katakana (あ U+3042 → ア U+30A2)
+                {
+                    for(var i = 0; i < cycle.Length; i++)
+                        table[(char)(cycle[i] + offset)] = (char)(cycle[(i + 1) % cycle.Length] + offset);
+                }
+            }
+            return table;
+        }
     }
     public static class SmartPhoneInputUtil
     {

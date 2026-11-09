@@ -154,7 +154,11 @@ public class TextManagementSystem : MonoBehaviour
         if(writingText != "")
         {
             string oldText = writingText;
-            if(TextConversionUtil.smallTextDictionary.TryGetValue(oldText[oldText.Length-1], out var smallText))
+            if(TextConversionUtil.modifyCycleDictionary.TryGetValue(oldText[oldText.Length-1], out var nextKana))
+            {
+                writingText = oldText.Substring(0, oldText.Length-1) + nextKana;
+            }
+            else if(TextConversionUtil.smallTextDictionary.TryGetValue(oldText[oldText.Length-1], out var smallText))
             {
                 writingText = oldText.Substring(0, oldText.Length-1) + smallText;
             }
