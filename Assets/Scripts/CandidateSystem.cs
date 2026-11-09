@@ -26,6 +26,7 @@ public class CandidateSystem : MonoBehaviour
     private int dragThreshold = 10;
     private const string candidateTag = "Candidate";
     private int buttonPositionX;
+    private int latestRequest;
 
     void Start()
     {
@@ -91,12 +92,15 @@ public class CandidateSystem : MonoBehaviour
 
     private async Task GetLiterateAsync(string writingText)
     {
+        var request = ++latestRequest;
         if(writingText == "")
         {
             DestroyCandidateObjects();
             return;
         }
         var result = await TransLiterateSystem.GetJapaneseConversionAsync(writingText);
+        // A newer reading was typed while this one was converting: its reply would be stale.
+        if(request != latestRequest) return;
         CreateCandidateButton(result);
     }
 
