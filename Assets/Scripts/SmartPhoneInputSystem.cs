@@ -58,11 +58,7 @@ public class SmartPhoneInputSystem : MonoBehaviour
                     ShowAllSubkey();
                 }
             }
-            else
-            {
-                isMainButtonPressed = false;
-                HideAllSubkey();
-            }
+            // Off the overlay the flick keeps the direction it had; the release decides.
         }
     }
 
