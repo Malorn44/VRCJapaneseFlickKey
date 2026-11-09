@@ -1,0 +1,19 @@
+{
+ "$schema": "../pack.schema.json",
+ "schemaVersion": 1,
+ "kind": "theme",
+ "id": "themes/night-owl",
+ "name": "Night Owl",
+ "radius": 6,
+ "colors": {
+  "surface": "#011627",
+  "key": "#0b2942",
+  "keyText": "#d6deeb",
+  "modifier": "#1d3b53",
+  "accent": "#f78c6c",
+  "legend": "#89a4bb",
+  "fnLegend": "#c792ea",
+  "hover": "#234d70",
+  "error": "#ef5350"
+ }
+}

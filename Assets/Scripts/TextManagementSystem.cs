@@ -331,7 +331,10 @@ public class TextManagementSystem : MonoBehaviour
         {
             var focused = groups[0];
             var rest = string.Concat(groups.Skip(1).Select(g => g.Text));
-            inputField.text = $"{transLiteratedText}<u><mark=#00baf340>{focused.Text}</mark>{rest}</u>";
+            var mark = ThemeSystem.Instance != null ? ThemeSystem.Instance.MarkColor : "#00baf340";
+            var otherColor = ThemeSystem.Instance != null ? ThemeSystem.Instance.OtherGroupColor : null;
+            if(otherColor != null && rest != "") rest = $"<color={otherColor}>{rest}</color>";
+            inputField.text = $"{transLiteratedText}<u><mark={mark}>{focused.Text}</mark>{rest}</u>";
             candidateSystem.ShowConversionCandidates(focused.candidates, focused.picked);
         }
         else
@@ -351,5 +354,7 @@ public class TextManagementSystem : MonoBehaviour
     void Start()
     {
         InitText();
+        // A new theme recolours the focused group's highlight at once.
+        if(ThemeSystem.Instance != null) ThemeSystem.Instance.ThemeChanged += () => { if(groups != null) Render(); };
     }
 }
