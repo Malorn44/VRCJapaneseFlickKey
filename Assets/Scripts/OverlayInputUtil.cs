@@ -239,7 +239,7 @@ namespace OverlayInputUtil
             { SmartPhoneKeyType.M, new List<string>       { "マ", "ミ", "ム", "メ", "モ" } },
             { SmartPhoneKeyType.Y, new List<string>       { "ヤ", "{", "ユ",  "}", "ヨ" } },
             { SmartPhoneKeyType.R, new List<string>       { "ラ", "リ", "ル", "レ", "ロ" } },
-            { SmartPhoneKeyType.DAKUTEN, new List<string> { "゛", "小", "[", "゜" } },
+            { SmartPhoneKeyType.DAKUTEN, new List<string> { "小", "゛", "[", "゜" } },
             { SmartPhoneKeyType.W, new List<string>       { "ワ", "ヲ", "]", "ン" } },
             { SmartPhoneKeyType.SYMBOL, new List<string>  { "ー", ".", "!?", "￥" } }
         };
