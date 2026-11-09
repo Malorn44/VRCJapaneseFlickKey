@@ -105,7 +105,7 @@ public class CandidateSystem : MonoBehaviour
         DestroyCandidateObjects();
         InitCandidateParentPosition();
         buttonPositionX = 0;
-        for(var i = 1; i <= item.Count; i++)
+        for(var i = 1; i < item.Count; i++)
         {
             var candidateText = item[i].ToString();
             var buttonWidth = candidateText.Length * characterXSize + buttonInSet;
