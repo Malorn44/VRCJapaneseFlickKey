@@ -249,11 +249,11 @@ namespace OverlayInputUtil
             { SmartPhoneKeyType.N, new List<string>       { "な", "に", "ぬ", "ね", "の" } },
             { SmartPhoneKeyType.H, new List<string>       { "は", "ひ", "ふ", "へ", "ほ" } },
             { SmartPhoneKeyType.M, new List<string>       { "ま", "み", "む", "め", "も" } },
-            { SmartPhoneKeyType.Y, new List<string>       { "や", "(", "ゆ",  ")", "よ" } },
+            { SmartPhoneKeyType.Y, new List<string>       { "や", "「", "ゆ", "」", "よ" } },
             { SmartPhoneKeyType.R, new List<string>       { "ら", "り", "る", "れ", "ろ" } },
-            { SmartPhoneKeyType.DAKUTEN, new List<string> { "小", "゛", "ー", "゜" } },
-            { SmartPhoneKeyType.W, new List<string>       { "わ", "を", "ん", "～" } },
-            { SmartPhoneKeyType.SYMBOL, new List<string>  { "、", "。", "？", "！" } }
+            { SmartPhoneKeyType.DAKUTEN, new List<string> { "小", "゛", "", "゜" } },
+            { SmartPhoneKeyType.W, new List<string>       { "わ", "を", "ん", "ー", "～" } },
+            { SmartPhoneKeyType.SYMBOL, new List<string>  { "、", "。", "？", "！", "…" } }
         };
 
         public static Dictionary<SmartPhoneKeyType, List<string>> KatakanaSubKeys = new Dictionary<SmartPhoneKeyType, List<string>>()
@@ -265,10 +265,10 @@ namespace OverlayInputUtil
             { SmartPhoneKeyType.N, new List<string>       { "ナ", "ニ", "ヌ", "ネ", "ノ" } },
             { SmartPhoneKeyType.H, new List<string>       { "ハ", "ヒ", "フ", "ヘ", "ホ" } },
             { SmartPhoneKeyType.M, new List<string>       { "マ", "ミ", "ム", "メ", "モ" } },
-            { SmartPhoneKeyType.Y, new List<string>       { "ヤ", "{", "ユ",  "}", "ヨ" } },
+            { SmartPhoneKeyType.Y, new List<string>       { "ヤ", "「", "ユ", "」", "ヨ" } },
             { SmartPhoneKeyType.R, new List<string>       { "ラ", "リ", "ル", "レ", "ロ" } },
-            { SmartPhoneKeyType.DAKUTEN, new List<string> { "小", "゛", "[", "゜" } },
-            { SmartPhoneKeyType.W, new List<string>       { "ワ", "ヲ", "]", "ン" } },
+            { SmartPhoneKeyType.DAKUTEN, new List<string> { "小", "゛", "", "゜" } },
+            { SmartPhoneKeyType.W, new List<string>       { "ワ", "ヲ", "ン", "ー", "～" } },
             { SmartPhoneKeyType.SYMBOL, new List<string>  { "ー", ".", "!?", "￥" } }
         };
 
