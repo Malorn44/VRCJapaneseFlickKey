@@ -38,13 +38,15 @@ public class SmartPhoneInputSystem : MonoBehaviour
                 var hitPositionDiff = (Vector2)hitPosition - triggerDownPosition;
                 var x = Mathf.Abs(hitPositionDiff.x);
                 var y = Mathf.Abs(hitPositionDiff.y);
-                if(x >= y && x >= mainSystem.GetDragThreshold())
+                // As polykey: a tap until the pointer is the threshold away (in any direction), then the nearest axis.
+                var isFlick = hitPositionDiff.magnitude >= mainSystem.GetDragThreshold();
+                if(x >= y && isFlick)
                 {
                     if(hitPositionDiff.x < 0) currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.LEFT;
                     else currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.RIGHT;
                     ShowSubKeyIndex(currentButtonPosition);
                 }
-                else if(y > x && y >= mainSystem.GetDragThreshold())
+                else if(y > x && isFlick)
                 {
                     if(hitPositionDiff.y > 0) currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.TOP;
                     else currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.BOTTOM;
