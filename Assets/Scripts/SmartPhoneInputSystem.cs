@@ -111,7 +111,7 @@ public class SmartPhoneInputSystem : MonoBehaviour
         for (int i = 0; i < currentSubKeyCount; i++)
         {
             //ButtonPositionのCENTERは使わないので1減らす
-            subButton[i].SetActive(i == (int)index-1 && HasSubKey(i));
+            subButton[i].SetActive(i == (int)index-1);
         }
     }
 
@@ -119,14 +119,8 @@ public class SmartPhoneInputSystem : MonoBehaviour
     {
         for (int i = 0; i < currentSubKeyCount; i++)
         {
-            subButton[i].SetActive(HasSubKey(i));
+            subButton[i].SetActive(true);
         }
-    }
-
-    // A petal with no kana (゛゜小's up) stays hidden.
-    bool HasSubKey(int i)
-    {
-        return keys[i+1] != "";
     }
 
     void HideAllSubkey()
@@ -154,7 +148,7 @@ public class SmartPhoneInputSystem : MonoBehaviour
 
             for (int i = 0; i < currentSubKeyCount; i++)
             {
-                subButton[i].SetActive(HasSubKey(i));
+                subButton[i].SetActive(true);
                 subButton[i].GetComponentInChildren<TextMeshProUGUI>().text = keys[i+1];//インデックス0(CENTER)の文字は表示しない
             }
         }
