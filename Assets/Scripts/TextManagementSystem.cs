@@ -14,11 +14,14 @@ public class TextManagementSystem : MonoBehaviour
     private string transLiteratedText = "";
     private string writingText = "";
     private int currentTransLiterateIndex;
+    private bool isConverting;    // 変換 was pressed: one group of the reading is highlighted
+    private bool isAwaitingGroup; // a group was confirmed: the next one starts when its candidates arrive
 
     public void InitText()
     {
         transLiteratedText = "";
         writingText = "";
+        EndConversion();
         ChangeInputFieldText(0);
     }
 
@@ -38,8 +41,31 @@ public class TextManagementSystem : MonoBehaviour
     {
         transLiteratedText += text;
         writingText = writingText.Substring(size);
-        buttonUISystem.SetTransLiterateButtonVisible();
+        // While converting, the converter's first segment of the rest becomes the next group.
+        if(isConverting && writingText != "") isAwaitingGroup = true;
+        else EndConversion();
         ChangeInputFieldText(0);
+    }
+
+    // Candidates are on show for a reading whose first segment is firstSegmentLength kana long.
+    public void OnCandidatesShown(int firstSegmentLength)
+    {
+        if(!isAwaitingGroup) return;
+        isAwaitingGroup = false;
+        StartGroup(firstSegmentLength);
+    }
+
+    private void StartGroup(int length)
+    {
+        if(length <= 0 || length > writingText.Length) length = writingText.Length;
+        ChangeInputFieldText(length);
+    }
+
+    private void EndConversion()
+    {
+        isConverting = false;
+        isAwaitingGroup = false;
+        buttonUISystem.SetTransLiterateButtonVisible();
     }
 
     public void DeleteText()
@@ -56,13 +82,13 @@ public class TextManagementSystem : MonoBehaviour
         }
         else return;
         ChangeInputFieldText(0);
-        buttonUISystem.SetTransLiterateButtonVisible();
+        EndConversion();
     }
 
     public void AllDeleteText()
     {
         InitText();
-        buttonUISystem.SetTransLiterateButtonVisible();
+        EndConversion();
     }
 
     public string GetCurrentText()
@@ -83,9 +109,14 @@ public class TextManagementSystem : MonoBehaviour
 
     public void EnterText()
     {
+        // While converting, 確定 takes the highlighted group's first candidate and moves on to the next group.
+        if(isConverting)
+        {
+            if(isAwaitingGroup || candidateSystem.ConfirmFirstCandidate()) return;
+        }
         transLiteratedText += writingText;
         writingText = "";
-        buttonUISystem.SetTransLiterateButtonVisible();
+        EndConversion();
         ChangeInputFieldText(0);
     }
 
@@ -199,12 +230,15 @@ public class TextManagementSystem : MonoBehaviour
 
     public void OnClickTransLiterateButton()
     {
+        isConverting = true;
+        isAwaitingGroup = false;
         buttonUISystem.SetCursorButtonVisible();
-        ChangeInputFieldText(writingText.Length);
+        StartGroup(candidateSystem.GetFirstSegmentLength());
     }
 
     public void OnClickLeftTransLiterateButton()
     {
+        if(isAwaitingGroup) return;
         if(currentTransLiterateIndex-1 != 0)
         {
             currentTransLiterateIndex--;
@@ -214,14 +248,12 @@ public class TextManagementSystem : MonoBehaviour
 
     public void OnClickRightTransLiterateButton()
     {
+        if(isAwaitingGroup) return;
+        // At the end of the reading the group can't grow any more: it stays as it is.
         if(currentTransLiterateIndex != writingText.Length)
         {
             currentTransLiterateIndex++;
             ChangeInputFieldText(currentTransLiterateIndex);
-        }
-        else
-        {
-            EnterText();
         }
     }
 

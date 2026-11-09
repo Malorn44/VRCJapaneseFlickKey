@@ -27,6 +27,7 @@ public class CandidateSystem : MonoBehaviour
     private const string candidateTag = "Candidate";
     private int buttonPositionX;
     private int latestRequest;
+    private int firstSegmentLength;
 
     void Start()
     {
@@ -96,6 +97,7 @@ public class CandidateSystem : MonoBehaviour
         if(writingText == "")
         {
             DestroyCandidateObjects();
+            firstSegmentLength = 0;
             return;
         }
         var result = await TransLiterateSystem.GetJapaneseConversionAsync(writingText);
@@ -122,6 +124,22 @@ public class CandidateSystem : MonoBehaviour
             candidateObjects.Add(candidateObject);
             buttonPositionX += buttonWidth;
         }
+        // item[0] is the reading of the converter's first segment.
+        firstSegmentLength = item[0].ToString().Length;
+        textManagementSystem.OnCandidatesShown(firstSegmentLength);
+    }
+
+    public int GetFirstSegmentLength()
+    {
+        return firstSegmentLength;
+    }
+
+    // 確定 while converting: picks the first candidate on show, if there is one.
+    public bool ConfirmFirstCandidate()
+    {
+        if(candidateObjects.Count == 0) return false;
+        candidateObjects[0].GetComponent<Button>().onClick.Invoke();
+        return true;
     }
 
     private void OnClickCandidateButton(string text, int length)
@@ -137,5 +155,6 @@ public class CandidateSystem : MonoBehaviour
         {
             Destroy(obj);
         }
+        candidateObjects.Clear();
     }
 }
