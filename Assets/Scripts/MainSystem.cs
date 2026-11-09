@@ -5,8 +5,8 @@ using SystemUtil;
 
 public class MainSystem : MonoBehaviour
 {
-    public readonly Vector2 windowSize = new Vector2(500, 420);
-    public readonly Vector3 raycastBias = new Vector2(250, 210);
+    public readonly Vector2 windowSize = new Vector2(500, 460);
+    public readonly Vector3 raycastBias = new Vector2(250, 230);
     [SerializeField] ButtonUISystem buttonUISystem;
     [SerializeField] DashBoardUISystem dashBoardUISystem;
     [SerializeField] TextManagementSystem textManagementSystem;
@@ -52,6 +52,20 @@ public class MainSystem : MonoBehaviour
     public void ChangeInputType()
     {
         inputType = (MainSystemUtil.InputTypes)(((int)inputType + 1) % (Enum.GetNames(typeof(MainSystemUtil.InputTypes)).Length-1));
+        buttonUISystem.SetButtonVisible(inputType);
+    }
+
+    // あ/ア: hiragana and katakana.
+    public void ToggleKana()
+    {
+        inputType = inputType == MainSystemUtil.InputTypes.Hiragana ? MainSystemUtil.InputTypes.Katakana : MainSystemUtil.InputTypes.Hiragana;
+        buttonUISystem.SetButtonVisible(inputType);
+    }
+
+    // あa: kana and letters.
+    public void ToggleAlphabet()
+    {
+        inputType = inputType == MainSystemUtil.InputTypes.Alphabet ? MainSystemUtil.InputTypes.Hiragana : MainSystemUtil.InputTypes.Alphabet;
         buttonUISystem.SetButtonVisible(inputType);
     }
 

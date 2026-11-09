@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using CGITransLiterateUtil;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Linq;
 using TMPro;
 
 public class CandidateSystem : MonoBehaviour
@@ -27,7 +28,7 @@ public class CandidateSystem : MonoBehaviour
     private const string candidateTag = "Candidate";
     private int buttonPositionX;
     private int latestRequest;
-    private int firstSegmentLength;
+    private static readonly Color pickedColor = new Color32(0xB1, 0xDF, 0xFF, 0xFF); // as the flick petals
 
     void Start()
     {
@@ -85,6 +86,11 @@ public class CandidateSystem : MonoBehaviour
         }
     }
 
+    public bool GetUseTransLiterate()
+    {
+        return mainSystem.GetUseTransLiterate();
+    }
+
     public void GenerateCandidate(string writingText)
     {
         if(mainSystem.GetUseTransLiterate()) _ = GetLiterateAsync(writingText);
@@ -96,56 +102,57 @@ public class CandidateSystem : MonoBehaviour
         if(writingText == "")
         {
             DestroyCandidateObjects();
-            firstSegmentLength = 0;
             return;
         }
         var result = await TransLiterateSystem.GetJapaneseConversionAsync(writingText);
         // A newer reading was typed while this one was converting: its reply would be stale.
-        if(request != latestRequest) return;
-        CreateCandidateButton(result);
+        if(request != latestRequest || result == null) return;
+        // result[0] is the reading of the first segment; picking a candidate replaces that much of it.
+        var readingLength = result[0].ToString().Length;
+        var candidates = result.Skip(1).Select(c => c.ToString()).ToList();
+        CreateCandidateButtons(candidates, -1, index =>
+        {
+            DestroyCandidateObjects();
+            InitCandidateParentPosition();
+            textManagementSystem.TextTransLiterate(candidates[index], readingLength);
+        });
     }
 
-    private void CreateCandidateButton(Newtonsoft.Json.Linq.JArray item)
+    // While converting: the focused group's candidates, with the picked one highlighted and in view.
+    public void ShowConversionCandidates(List<string> candidates, int picked)
+    {
+        latestRequest++; // a live reply still on its way must not replace these
+        CreateCandidateButtons(candidates, picked, index => textManagementSystem.OnCandidatePicked(index));
+    }
+
+    private void CreateCandidateButtons(List<string> candidates, int picked, System.Action<int> onPick)
     {
         DestroyCandidateObjects();
         InitCandidateParentPosition();
         buttonPositionX = 0;
-        for(var i = 1; i < item.Count; i++)
+        var pickedRight = 0;
+        for(var i = 0; i < candidates.Count; i++)
         {
-            var candidateText = item[i].ToString();
+            var candidateText = candidates[i];
+            var index = i;
             var buttonWidth = candidateText.Length * characterXSize + buttonInSet;
             GameObject candidateObject = Instantiate(candidateButtonPrefab) as GameObject;
             candidateObject.GetComponent<RectTransform>().sizeDelta = new Vector2(buttonWidth, defaultButtonHeight);
             candidateObject.transform.localPosition = new Vector3(buttonPositionX, 0, 0);
             candidateObject.transform.SetParent(candidateParent.transform, false);
             candidateObject.GetComponentInChildren<TextMeshProUGUI>().text = candidateText;
-            candidateObject.GetComponent<Button>().onClick.AddListener(() => OnClickCandidateButton(candidateText, item[0].ToString().Length));
+            candidateObject.GetComponent<Button>().onClick.AddListener(() => onPick(index));
+            if(i == picked)
+            {
+                candidateObject.GetComponent<Image>().color = pickedColor;
+                pickedRight = buttonPositionX + buttonWidth;
+            }
             candidateObjects.Add(candidateObject);
             buttonPositionX += buttonWidth;
         }
-        // item[0] is the reading of the converter's first segment.
-        firstSegmentLength = item[0].ToString().Length;
-        textManagementSystem.OnCandidatesShown(firstSegmentLength);
-    }
-
-    public int GetFirstSegmentLength()
-    {
-        return firstSegmentLength;
-    }
-
-    // 確定 while converting: picks the first candidate on show, if there is one.
-    public bool ConfirmFirstCandidate()
-    {
-        if(candidateObjects.Count == 0) return false;
-        candidateObjects[0].GetComponent<Button>().onClick.Invoke();
-        return true;
-    }
-
-    private void OnClickCandidateButton(string text, int length)
-    {
-        DestroyCandidateObjects();
-        InitCandidateParentPosition();
-        textManagementSystem.TextTransLiterate(text, length);
+        // Scroll the bar so the picked candidate is in view.
+        var overflow = pickedRight - mainSystem.GetWindowSize().x;
+        if(overflow > 0) candidateTransform.anchoredPosition = defaultCandidateParentPosition - new Vector2(overflow, 0);
     }
 
     private void DestroyCandidateObjects()
