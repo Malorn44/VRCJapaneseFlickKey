@@ -87,7 +87,6 @@ public class CandidateSystem : MonoBehaviour
 
     public void GenerateCandidate(string writingText)
     {
-        Task _;
         if(mainSystem.GetUseTransLiterate()) _ = GetLiterateAsync(writingText);
     }
 

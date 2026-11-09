@@ -149,17 +149,6 @@ namespace OverlayVRUtil
             }
             else return null;
         }
-        public static Button GetButtonByPosition(EventSystem eventSystem, GraphicRaycaster graphicRaycaster, Vector2 cursorPosition)
-        {
-            var pointerEventData = new PointerEventData(eventSystem);
-            pointerEventData.position = cursorPosition;
-
-            var raycastResultList = new List<RaycastResult>();
-            graphicRaycaster.Raycast(pointerEventData, raycastResultList);
-            var raycastResult = raycastResultList.Find(element => element.gameObject.GetComponent<Button>());
-            if(raycastResult.gameObject == null) return null;
-            else return raycastResult.gameObject.GetComponent<Button>();
-        }
         public static GameObject GetButtonObjectByPosition(EventSystem eventSystem, GraphicRaycaster graphicRaycaster, Vector2 cursorPosition)
         {
             var pointerEventData = new PointerEventData(eventSystem);
