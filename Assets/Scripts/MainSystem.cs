@@ -22,55 +22,25 @@ public class MainSystem : MonoBehaviour
     private bool isUseJoystick;
     private bool isUseTransLiterate;
 
-    public float GetOverlaySize()
-    {
-        return overlaySizex10/10f;
-    }
+    public float GetOverlaySize() => overlaySizex10/10f;
 
-    public float GetOverlayDistance()
-    {
-        return overlayDistancex100/100f;
-    }
+    public float GetOverlayDistance() => overlayDistancex100/100f;
 
-    public int GetOverlaySizex10()
-    {
-        return overlaySizex10;
-    }
+    public int GetOverlaySizex10() => overlaySizex10;
 
-    public int GetOverlayDistancex100()
-    {
-        return overlayDistancex100;
-    }
+    public int GetOverlayDistancex100() => overlayDistancex100;
 
-    public int GetDragThreshold()
-    {
-        return dragThreshold;
-    }
+    public int GetDragThreshold() => dragThreshold;
 
-    public bool GetUseJoystick()
-    {
-        return isUseJoystick;
-    }
+    public bool GetUseJoystick() => isUseJoystick;
 
-    public bool GetUseTransLiterate()
-    {
-        return isUseTransLiterate;
-    }
+    public bool GetUseTransLiterate() => isUseTransLiterate;
 
-    public MainSystemUtil.InputTypes GetInputType()
-    {
-        return inputType;
-    }
+    public MainSystemUtil.InputTypes GetInputType() => inputType;
 
-    public MainSystemUtil.SendTarget GetSendTarget()
-    {
-        return sendTarget;
-    }
+    public MainSystemUtil.SendTarget GetSendTarget() => sendTarget;
 
-    public MainSystemUtil.TrackDevice GetTrackDevice()
-    {
-        return trackDevice;
-    }
+    public MainSystemUtil.TrackDevice GetTrackDevice() => trackDevice;
 
     public void ChangeSendTarget()
     {
@@ -98,20 +68,11 @@ public class MainSystem : MonoBehaviour
         buttonUISystem.SetButtonVisible(inputType);
     }
 
-    public Vector2 GetWindowSize()
-    {
-        return windowSize;
-    }
+    public Vector2 GetWindowSize() => windowSize;
 
-    public Vector2 GetRaycastBias()
-    {
-        return raycastBias;
-    }
+    public Vector2 GetRaycastBias() => raycastBias;
 
-    public ETrackedControllerRole GetTrackHand()
-    {
-        return trackHand;
-    }
+    public ETrackedControllerRole GetTrackHand() => trackHand;
 
     public void SetTrackHand(ETrackedControllerRole setTrackHand)
     {
