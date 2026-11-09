@@ -47,7 +47,7 @@ public class SmartPhoneInputSystem : MonoBehaviour
                 else if(y > x && y >= mainSystem.GetDragThreshold())
                 {
                     if(hitPositionDiff.y > 0) currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.TOP;
-                    else if(currentSubKeyCount == subButton.Count) currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.BOTTOM;
+                    else currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.BOTTOM;
                     ShowSubKeyIndex(currentButtonPosition);
                 }
                 else
@@ -101,7 +101,8 @@ public class SmartPhoneInputSystem : MonoBehaviour
                     }
                 }
             }
-            else textManagementSystem.AddText(keys[(int)currentButtonPosition]);
+            // A key with no kana in the flicked direction (down on わ, 、 or ゛゜小) types nothing.
+            else if((int)currentButtonPosition < keys.Count) textManagementSystem.AddText(keys[(int)currentButtonPosition]);
             currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.CENTER;
             HideAllSubkey();
         }
