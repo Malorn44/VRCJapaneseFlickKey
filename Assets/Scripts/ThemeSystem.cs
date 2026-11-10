@@ -193,6 +193,9 @@ public class ThemeSystem : MonoBehaviour
         foreach(var label in key.GetComponentsInChildren<TMP_Text>(true)) label.color = Current.accentText;
     }
 
+    // Behind the candidate grid, which covers the keys: the modifier colour. VRCJI's own look: a pale grey.
+    public Color PanelColor => ForImage(Current.isOriginal ? new Color32(0xE6, 0xE8, 0xEC, 0xFF) : Current.modifier);
+
     // The key or candidate under the pointer (polykey's hover). VRCJI's own look: a light grey.
     public Color HoverColor => ForImage(Current.isOriginal ? new Color32(0xD8, 0xDC, 0xE2, 0xFF) : Current.hover);
 
