@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using CGITransLiterateUtil;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Linq;
@@ -108,17 +107,17 @@ public class CandidateSystem : MonoBehaviour
             DestroyCandidateObjects();
             return;
         }
-        var result = await TransLiterateSystem.GetJapaneseConversionAsync(writingText);
+        var segments = await MozcConverter.GetSegmentsAsync(writingText);
         // A newer reading was typed while this one was converting: its reply would be stale.
-        if(request != latestRequest || result == null) return;
-        // result[0] is the reading of the first segment; picking a candidate replaces that much of it.
-        var readingLength = result[0].ToString().Length;
-        var candidates = result.Skip(1).Select(c => c.ToString()).ToList();
+        if(request != latestRequest || segments == null || segments.Count == 0) return;
+        // The candidates are the first segment's; picking one replaces that much of the reading.
+        var (reading, candidates) = segments[0];
         CreateCandidateButtons(candidates, -1, index =>
         {
             DestroyCandidateObjects();
             InitCandidateParentPosition();
-            textManagementSystem.TextTransLiterate(candidates[index], readingLength);
+            MozcConverter.Learn(reading, candidates[index]);
+            textManagementSystem.TextTransLiterate(candidates[index], reading.Length);
         });
     }
 
