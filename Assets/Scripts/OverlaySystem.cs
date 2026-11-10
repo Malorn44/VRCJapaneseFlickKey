@@ -21,7 +21,7 @@ public class OverlaySystem : MonoBehaviour
     void Awake()
     {
         OverlaySystemUtil.InitOpenVR();
-        overlayHandle = OverlayUtil.CreateOverlay("VRCJapaneseInputter_key", "VRCJapaneseInputter");
+        overlayHandle = OverlayUtil.CreateOverlay("VRCJapaneseFlickKey_key", "VRCJapaneseFlickKey");
     }
 
     void Start()
