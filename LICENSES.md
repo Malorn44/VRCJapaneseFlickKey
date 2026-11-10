@@ -187,3 +187,44 @@ Unity Technologies SF (“Unity”) grants to you a worldwide, non-exclusive, no
 9. Severability. If any provision of this License is held to be unenforceable or invalid, that provision will be enforced to the maximum extent possible and the other provisions will remain in full force and effect.
 
 10. Governing Law and Venue. This License is governed by and construed in accordance with the laws of the United States and the state of California, except for its conflict of laws rules; the United Nations Convention on Contracts for the International Sale of Goods will not apply. You and Unity agree to submit to the personal and exclusive jurisdiction of and venue in the state and federal courts located in San Francisco County, California concerning any dispute arising out of this License.
+
+
+## 6. Keyboard themes (MIT License)
+- Files: Assets/StreamingAssets/themes/*.json, adapted from polykey's theme packs
+  (https://github.com/Malorn44/steam-frame-polykey, packs/themes, MIT, Copyright (c) 2026 Mara Schwartz)
+- Assets/StreamingAssets/themes/CREDITS.md says, theme by theme, which colours are the palette's and
+  which (blends, shadows, a legend grey) were picked for polykey.
+
+The colours come from these palettes, each under the MIT License:
+
+- Catppuccin (https://github.com/catppuccin/palette): Copyright (c) 2021 Catppuccin
+- Dracula (https://github.com/dracula/dracula-theme, https://github.com/dracula/visual-studio-code): Copyright (c) 2016 Dracula Theme
+- GitHub Primer primitives (https://github.com/primer/primitives): Copyright (c) 2018 GitHub Inc.
+- gruvbox (https://github.com/morhetz/gruvbox): Copyright (c) Pavel Pertsev (morhetz), MIT/X11
+- Night Owl (https://github.com/sdras/night-owl-vscode-theme): Copyright (c) 2018 Sarah Drasner
+- Nord (https://github.com/nordtheme/nord): Copyright (c) 2016-present Sven Greb
+- Rosé Pine (https://github.com/rose-pine/rose-pine-palette): Copyright (c) mvllow
+- Solarized (https://github.com/altercation/solarized): Copyright (c) 2011 Ethan Schoonover
+- Tokyo Night (https://github.com/tokyo-night/tokyo-night-vscode-theme): Copyright (c) 2018-present Enkia
+
+```
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```

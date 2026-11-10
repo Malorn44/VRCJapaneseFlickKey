@@ -20,6 +20,7 @@ public class SmartPhoneInputSystem : MonoBehaviour
     private bool isMainButtonPressed = false;
     private Vector2 triggerDownPosition;
     private List<string> keys;
+    private GameObject pressedKey; // the key being flicked
     private const string smartPhoneTag = "SmartPhoneButton";
 
     void Start()
@@ -45,17 +46,20 @@ public class SmartPhoneInputSystem : MonoBehaviour
                     if(hitPositionDiff.x < 0) currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.LEFT;
                     else currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.RIGHT;
                     ShowSubKeyIndex(currentButtonPosition);
+                    ColorMainKey(false);
                 }
                 else if(y > x && isFlick)
                 {
                     if(hitPositionDiff.y > 0) currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.TOP;
                     else currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.BOTTOM;
                     ShowSubKeyIndex(currentButtonPosition);
+                    ColorMainKey(false);
                 }
                 else
                 {
                     currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.CENTER;
                     ShowAllSubkey();
+                    ColorMainKey(true);
                 }
             }
             // Off the overlay the flick keeps the direction it had; the release decides.
@@ -65,6 +69,7 @@ public class SmartPhoneInputSystem : MonoBehaviour
     void TriggerDown(Vector2 hitPosition, GameObject buttonObject)
     {
         triggerDownPosition = hitPosition;
+        pressedKey = buttonObject;
         if(buttonObject != null && buttonObject.CompareTag(smartPhoneTag)) buttonObject.GetComponent<Button>().onClick.Invoke();
     }
 
@@ -73,6 +78,8 @@ public class SmartPhoneInputSystem : MonoBehaviour
         if(isMainButtonPressed)
         {
             isMainButtonPressed = false;
+            ColorMainKey(false);
+            actionSystem.SetHoverLocked(false);
             if(currentKeyType == SmartPhoneInputUtil.SmartPhoneKeyType.DAKUTEN)
             {
                 switch(currentButtonPosition)
@@ -112,6 +119,7 @@ public class SmartPhoneInputSystem : MonoBehaviour
         {
             //ButtonPositionのCENTERは使わないので1減らす
             subButton[i].SetActive(i == (int)index-1);
+            ColorPetal(i, i == (int)index-1);
         }
     }
 
@@ -120,7 +128,18 @@ public class SmartPhoneInputSystem : MonoBehaviour
         for (int i = 0; i < currentSubKeyCount; i++)
         {
             subButton[i].SetActive(true);
+            ColorPetal(i, false);
         }
+    }
+
+    void ColorMainKey(bool isPicked)
+    {
+        if(ThemeSystem.Instance != null && pressedKey != null) ThemeSystem.Instance.ColorMainKey(pressedKey, isPicked);
+    }
+
+    void ColorPetal(int i, bool isPicked)
+    {
+        if(ThemeSystem.Instance != null) ThemeSystem.Instance.ColorPetal(subButton[i], isPicked);
     }
 
     void HideAllSubkey()
@@ -149,8 +168,12 @@ public class SmartPhoneInputSystem : MonoBehaviour
             for (int i = 0; i < currentSubKeyCount; i++)
             {
                 subButton[i].SetActive(true);
+                ColorPetal(i, false);
                 subButton[i].GetComponentInChildren<TextMeshProUGUI>().text = keys[i+1];//インデックス0(CENTER)の文字は表示しない
             }
+            // A flick starts at its centre: the key is the pick, and hover stays on it until the release.
+            actionSystem.SetHoverLocked(true);
+            ColorMainKey(true);
         }
     }
 }

@@ -19,6 +19,9 @@ public class ActionSystem : MonoBehaviour
     [SerializeField] private OverlaySystem overlaySystem;
     private Vector2? currentHitPosition = null;
     private Vector2 lastHitPosition; // the last point on the overlay, for a release off it
+    private GameObject hoveredButton;  // the key or candidate under the pointer, in the hover colour
+    private Color hoveredColor;        // its own colour, for when the pointer leaves
+    private bool isHoverLocked;        // a key's petals are open: hover stays on that key
     private ulong rightTriggerActionHandle = 0;
     private ulong leftTriggerActionHandle = 0;
     private ulong showOverlayButtonHandle = 0;
@@ -37,6 +40,8 @@ public class ActionSystem : MonoBehaviour
         showOverlayButtonHandle = ActionUtil.GetActionHandlePath($"/actions/ControllerInput/in/ShowOverlayButton");
         showOverlayStickHandle = ActionUtil.GetActionHandlePath($"/actions/ControllerInput/in/ShowOverlayStick");
         overlayHandle = overlaySystem.GetOverlayHandle();
+        // A new theme recolours every key, the hovered one too: forget it rather than restore an old colour.
+        if(ThemeSystem.Instance != null) ThemeSystem.Instance.ThemeChanged += () => hoveredButton = null;
     }
 
     void Update()
@@ -60,6 +65,7 @@ public class ActionSystem : MonoBehaviour
                 lastHitPosition = (Vector2)hitPosition;
                 OnHitPositionMove?.Invoke((Vector2)hitPosition);
                 OnCursorPositionMove?.Invoke((Vector2)hitPosition-mainSystem.GetRaycastBias());
+                UpdateHover(OverlayUtil.GetButtonObjectByPosition(eventSystem, graphicRaycaster, (Vector2)hitPosition));
             }
         }
         else
@@ -67,7 +73,33 @@ public class ActionSystem : MonoBehaviour
             currentHitPosition = null;
             OnHitPositionMove?.Invoke(null);
             OnCursorPositionMove?.Invoke(null);
+            UpdateHover(null);
         }
+    }
+
+    // The button under the pointer takes the theme's hover colour; the one it leaves gets its own back.
+    void UpdateHover(GameObject button)
+    {
+        if(isHoverLocked || button == hoveredButton) return;
+        if(hoveredButton != null) hoveredButton.GetComponent<Image>().color = hoveredColor;
+        hoveredButton = null;
+        if(button == null || ThemeSystem.Instance == null) return;
+        var image = button.GetComponent<Image>();
+        if(image == null || image.color.a == 0) return; // clear (〇×) is a transparent hit area
+        hoveredButton = button;
+        hoveredColor = image.color;
+        image.color = ThemeSystem.Instance.HoverColor;
+    }
+
+    // While a key's petals are open, hover stays put; when the flick ends it goes to the key under the pointer.
+    public void SetHoverLocked(bool isLocked)
+    {
+        isHoverLocked = isLocked;
+        if(isLocked) return;
+        var button = currentHitPosition != null ? OverlayUtil.GetButtonObjectByPosition(eventSystem, graphicRaycaster, (Vector2)currentHitPosition) : null;
+        if(button != null && button == hoveredButton && ThemeSystem.Instance != null)
+            hoveredButton.GetComponent<Image>().color = ThemeSystem.Instance.HoverColor;
+        else UpdateHover(button);
     }
 
     void UpdateAction()

@@ -68,5 +68,6 @@ public class SettingSystem : MonoBehaviour
         mainSystem.SetDragThreshold(defaultDragThreshold);
         mainSystem.SetUseJoystick(defaultIsUseJoystick);
         mainSystem.SetUseTransLiterate(defaultIsUseTransLiterate);
+        if(ThemeSystem.Instance != null) ThemeSystem.Instance.ResetTheme();
     }
 }

@@ -28,10 +28,14 @@ public class CandidateSystem : MonoBehaviour
     private const string candidateTag = "Candidate";
     private int buttonPositionX;
     private int latestRequest;
-    private static readonly Color pickedColor = new Color32(0xB1, 0xDF, 0xFF, 0xFF); // as the flick petals
+    private int currentPicked = -1;
+    private Color prefabFill, prefabText; // the candidate button's own colours, for VRCJI's own look
 
     void Start()
     {
+        if(ThemeSystem.Instance != null) ThemeSystem.Instance.ThemeChanged += RecolorCandidates;
+        prefabFill = candidateButtonPrefab.GetComponent<Image>().color;
+        prefabText = candidateButtonPrefab.GetComponentInChildren<TMP_Text>(true).color;
         defaultCandidateParentPosition = candidateTransform.anchoredPosition;
         actionSystem.OnTriggerDown += TriggerDown;
         actionSystem.OnTriggerUp += TriggerUp;
@@ -131,6 +135,7 @@ public class CandidateSystem : MonoBehaviour
         InitCandidateParentPosition();
         buttonPositionX = 0;
         var pickedRight = 0;
+        currentPicked = picked;
         for(var i = 0; i < candidates.Count; i++)
         {
             var candidateText = candidates[i];
@@ -142,17 +147,20 @@ public class CandidateSystem : MonoBehaviour
             candidateObject.transform.SetParent(candidateParent.transform, false);
             candidateObject.GetComponentInChildren<TextMeshProUGUI>().text = candidateText;
             candidateObject.GetComponent<Button>().onClick.AddListener(() => onPick(index));
-            if(i == picked)
-            {
-                candidateObject.GetComponent<Image>().color = pickedColor;
-                pickedRight = buttonPositionX + buttonWidth;
-            }
+            if(ThemeSystem.Instance != null) ThemeSystem.Instance.ColorCandidate(candidateObject, i == picked, prefabFill, prefabText);
+            if(i == picked) pickedRight = buttonPositionX + buttonWidth;
             candidateObjects.Add(candidateObject);
             buttonPositionX += buttonWidth;
         }
         // Scroll the bar so the picked candidate is in view.
         var overflow = pickedRight - mainSystem.GetWindowSize().x;
         if(overflow > 0) candidateTransform.anchoredPosition = defaultCandidateParentPosition - new Vector2(overflow, 0);
+    }
+
+    // A new theme: the buttons on show take its colours now, not at the next keystroke.
+    private void RecolorCandidates()
+    {
+        for(var i = 0; i < candidateObjects.Count; i++) ThemeSystem.Instance.ColorCandidate(candidateObjects[i], i == currentPicked, prefabFill, prefabText);
     }
 
     private void DestroyCandidateObjects()
