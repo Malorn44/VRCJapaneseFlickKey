@@ -77,8 +77,3 @@ crashlytics-build.properties
 /unityProject.vrmanifest
 /.vscode
 /.vsconfig
-
-# mozc-ffi's DLL: scripts/fetch-mozc.ps1 downloads it
-/[Aa]ssets/Plugins/MozcFfi/x86_64/mozc_ffi.dll
-/[Aa]ssets/Plugins/MozcFfi/x86_64/mozc_ffi.dll.meta
-/[Aa]ssets/Plugins/MozcFfi/x86_64.meta

@@ -229,7 +229,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ## 7. mozc-ffi and Mozc (BSD 3-Clause License, and the licences below)
-- Source: https://github.com/Malorn44/mozc-ffi (v0.1.0): `Assets/Plugins/MozcFfi/MozcFfi.cs` and `mozc_ffi.dll`
+- Source: https://github.com/Malorn44/mozc-ffi, as the Unity package `com.malorn44.mozc-ffi` 0.2.0 from npm (`Packages/manifest.json`): its C# bindings and `mozc_ffi.dll`
 - The DLL contains Mozc (https://github.com/google/mozc) and its dictionary.
 
 ```
