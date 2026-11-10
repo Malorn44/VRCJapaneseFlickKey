@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using OverlayInputUtil;
-using CGITransLiterateUtil;
 using TMPro;
 
 public class TextManagementSystem : MonoBehaviour
@@ -176,15 +175,15 @@ public class TextManagementSystem : MonoBehaviour
         _ = ConvertAsync(writingText.Substring(0, length), writingText.Substring(length));
     }
 
-    // Converts the reading into groups. With `head`, the first group is exactly `head` and the rest is
-    // segmented by Google on its own (a comma would make the whole rest one group).
+    // Converts the reading into groups. With `rest`, the first group is exactly `head` and Mozc segments
+    // the rest on its own.
     private async Task ConvertAsync(string head, string rest)
     {
         var request = ++conversionRequest;
         isConversionPending = true;
         Render();
-        var headTask = TransLiterateSystem.GetSegmentsAsync(rest == null ? head : head + ",");
-        var restTask = string.IsNullOrEmpty(rest) ? null : TransLiterateSystem.GetSegmentsAsync(rest);
+        var headTask = MozcConverter.GetSegmentsAsync(head, rest == null ? null : new[] { head.Length });
+        var restTask = string.IsNullOrEmpty(rest) ? null : MozcConverter.GetSegmentsAsync(rest);
         var segments = await headTask;
         var restSegments = restTask != null ? await restTask : null;
         if(request != conversionRequest) return; // cancelled, or a newer request was made
@@ -194,7 +193,7 @@ public class TextManagementSystem : MonoBehaviour
         // Use the groups only if they cover the reading exactly; otherwise stay with the reading.
         if(segments != null && segments.Count > 0 && string.Concat(segments.Select(s => s.reading)) == writingText)
         {
-            groups = segments.Select(s => new Group { reading = s.reading, candidates = s.candidates }).ToList();
+            groups = segments.Select(s => new Group { reading = s.reading, candidates = candidateSystem.Displayable(s.candidates) }).ToList();
         }
         Render();
     }
@@ -202,6 +201,7 @@ public class TextManagementSystem : MonoBehaviour
     private void ConfirmGroup()
     {
         var group = groups[0];
+        Learn(group);
         transLiteratedText += group.Text;
         writingText = writingText.Substring(group.reading.Length);
         groups.RemoveAt(0);
@@ -214,10 +214,17 @@ public class TextManagementSystem : MonoBehaviour
     {
         if(groups != null)
         {
+            groups.ForEach(Learn);
             transLiteratedText += string.Concat(groups.Select(g => g.Text));
             writingText = "";
         }
         CancelConversion();
+    }
+
+    // A group kept as converted: Mozc ranks its pick first for that reading next time.
+    private static void Learn(Group group)
+    {
+        if(group.candidates.Count > 0) MozcConverter.Learn(group.reading, group.Text);
     }
 
     private void CancelConversion()

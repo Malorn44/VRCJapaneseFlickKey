@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.malorn44.mozc-ffi": {
+      "version": "0.2.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://registry.npmjs.org"
+    },
     "com.unity.collab-proxy": {
       "version": "2.7.1",
       "depth": 0,

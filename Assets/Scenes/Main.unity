@@ -10158,7 +10158,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Google CGI API\u306B\u3088\u308B\u5909\u63DB\u6A5F\u80FD\u306E\u4F7F\u7528\u3092\u8A2D\u5B9A\u3057\u307E\u3059\u3002\n\u4F7F\u7528\u3059\u308B\u5834\u5408\u5165\u529B\u3055\u308C\u305F\u30C6\u30AD\u30B9\u30C8\u306FGoogle\u306B\u9001\u4FE1\u3055\u308C\u307E\u3059\u3002\n<color=\"yellow\">\u500B\u4EBA\u60C5\u5831\u7B49\u306E\u91CD\u8981\u306A\u60C5\u5831\u306F\u5165\u529B\u3057\u306A\u3044\u3088\u3046\u3054\u6CE8\u610F\u304F\u3060\u3055\u3044\u3002</color>"
+  m_text: "\u5909\u63DB\u6A5F\u80FD\u306E\u4F7F\u7528\u3092\u8A2D\u5B9A\u3057\u307E\u3059\u3002\n\u5909\u63DB\u306FMozc\u306B\u3088\u3063\u3066\u3053\u306EPC\u306E\u4E2D\u3067\u884C\u308F\u308C\u3001\u5165\u529B\u3057\u305F\u30C6\u30AD\u30B9\u30C8\u306F\u5916\u90E8\u306B\u9001\u4FE1\u3055\u308C\u307E\u305B\u3093\u3002"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a41616d678ad2ec43abdeb14e1a828c9, type: 2}
   m_sharedMaterial: {fileID: -6983458972381495562, guid: a41616d678ad2ec43abdeb14e1a828c9, type: 2}
@@ -11535,7 +11535,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30FBGoogle CGI API for Japanese Input"
+  m_text: "\u30FBMozc (mozc-ffi)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a41616d678ad2ec43abdeb14e1a828c9, type: 2}
   m_sharedMaterial: {fileID: -6983458972381495562, guid: a41616d678ad2ec43abdeb14e1a828c9, type: 2}
@@ -13904,7 +13904,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30FBGoogle CGI API\u306E\u4F7F\u7528"
+  m_text: "\u30FB\u5909\u63DB\u6A5F\u80FD\u306E\u4F7F\u7528"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a41616d678ad2ec43abdeb14e1a828c9, type: 2}
   m_sharedMaterial: {fileID: -6983458972381495562, guid: a41616d678ad2ec43abdeb14e1a828c9, type: 2}
@@ -30507,8 +30507,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "https://www.google.co.jp/ime/cgiapi.html\n\u3053\u306E\u30A2\u30D7\u30EA\u306FGoogle
-    CGI API\u3092\u4F7F\u7528\u3057\u3066\u3044\u307E\u3059\u3002\n\u4F7F\u7528\u306E\u969B\u306F\u5229\u7528\u898F\u7D04\u3092\u9075\u5B88\u3059\u308B\u3088\u3046\u304A\u9858\u3044\u3044\u305F\u3057\u307E\u3059\u3002\nhttps://policies.google.com/terms\n"
+  m_text: "https://github.com/google/mozc\n\u3053\u306E\u30A2\u30D7\u30EA\u306F\u304B\u306A\u6F22\u5B57\u5909\u63DB\u306BMozc\u3092\u4F7F\u7528\u3057\u3066\u3044\u307E\u3059\u3002\n\u30E9\u30A4\u30BB\u30F3\u30B9\u306FLICENSES.md\u3092\u3054\u89A7\u304F\u3060\u3055\u3044\u3002\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a41616d678ad2ec43abdeb14e1a828c9, type: 2}
   m_sharedMaterial: {fileID: -6983458972381495562, guid: a41616d678ad2ec43abdeb14e1a828c9, type: 2}
