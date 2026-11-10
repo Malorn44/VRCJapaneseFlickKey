@@ -684,3 +684,11 @@ of the input file used when generating it.  This code is not
 standalone and requires a support library to be linked with it.  This
 support library is itself covered by the above license.
 ```
+
+## 8. Noto Emoji (SIL Open Font License Version 1.1)
+- Source: https://github.com/googlefonts/emoji-bw (as shipped by Google Fonts: https://github.com/google/fonts/tree/main/ofl/notoemoji, NotoEmoji[wght].ttf, version 3.002)
+- File: Assets/Resources/Fonts/NotoEmoji.ttf
+
+Copyright 2013 Google LLC
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1, the same licence as Kiwi Maru: its full text is in section 1.
