@@ -37,6 +37,7 @@ public class CandidateSystem : MonoBehaviour
         prefabFill = candidateButtonPrefab.GetComponent<Image>().color;
         prefabText = candidateButtonPrefab.GetComponentInChildren<TMP_Text>(true).color;
         font = candidateButtonPrefab.GetComponentInChildren<TMP_Text>(true).font;
+        EmojiFont.AddFallback(font);
         defaultCandidateParentPosition = candidateTransform.anchoredPosition;
         actionSystem.OnTriggerDown += TriggerDown;
         actionSystem.OnTriggerUp += TriggerUp;
@@ -125,11 +126,11 @@ public class CandidateSystem : MonoBehaviour
         });
     }
 
-    // The candidates the font can draw. Mozc also suggests emoji, which it can't: they'd be empty boxes.
+    // The candidates the font can draw: the rest would be empty boxes (rare kanji, emoji built from several).
     public List<string> Displayable(List<string> candidates)
     {
         if(font == null) return candidates;
-        return candidates.Where(c => font.HasCharacters(c, out uint[] _, true, true)).ToList();
+        return candidates.Where(c => EmojiFont.CanDraw(font, c)).ToList();
     }
 
     // While converting: the focused group's candidates, with the picked one highlighted and in view.
