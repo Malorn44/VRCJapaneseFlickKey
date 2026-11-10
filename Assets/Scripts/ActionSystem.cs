@@ -18,6 +18,7 @@ public class ActionSystem : MonoBehaviour
     [SerializeField] private MainSystem mainSystem;
     [SerializeField] private OverlaySystem overlaySystem;
     private Vector2? currentHitPosition = null;
+    private Vector2 lastHitPosition; // the last point on the overlay, for a release off it
     private ulong rightTriggerActionHandle = 0;
     private ulong leftTriggerActionHandle = 0;
     private ulong showOverlayButtonHandle = 0;
@@ -56,6 +57,7 @@ public class ActionSystem : MonoBehaviour
             if(hitPosition != currentHitPosition)
             {
                 currentHitPosition = hitPosition;
+                lastHitPosition = (Vector2)hitPosition;
                 OnHitPositionMove?.Invoke((Vector2)hitPosition);
                 OnCursorPositionMove?.Invoke((Vector2)hitPosition-mainSystem.GetRaycastBias());
             }
@@ -103,28 +105,28 @@ public class ActionSystem : MonoBehaviour
             overlaySystem.ShowOverlay();
         }
 
-        if(overlaySystem.GetOverlayVisible() && currentHitPosition != null)
+        // The trigger is read even off the overlay: a press starts only on it, but it can end anywhere
+        // (a flick that overshoots the edge), at the last point it had on the overlay.
+        var isOnOverlay = overlaySystem.GetOverlayVisible() && currentHitPosition != null;
+        if(mainSystem.GetTrackHand() == ETrackedControllerRole.RightHand)
         {
-            if(mainSystem.GetTrackHand() == ETrackedControllerRole.RightHand)
-            {
-                triggerResult = ActionUtil.GetDigitalActionData(rightTriggerActionHandle);
-            }
-            else if(mainSystem.GetTrackHand() == ETrackedControllerRole.LeftHand)
-            {
-                triggerResult = ActionUtil.GetDigitalActionData(leftTriggerActionHandle);
-            }
-            else ActionUtil.EVRInputErrThrowException(err, "アクションの更新に失敗しました");
+            triggerResult = ActionUtil.GetDigitalActionData(rightTriggerActionHandle);
+        }
+        else if(mainSystem.GetTrackHand() == ETrackedControllerRole.LeftHand)
+        {
+            triggerResult = ActionUtil.GetDigitalActionData(leftTriggerActionHandle);
+        }
+        else ActionUtil.EVRInputErrThrowException(err, "アクションの更新に失敗しました");
 
-            if(triggerResult.bChanged && triggerResult.bState)
-            {
-                var buttonObject = OverlayUtil.GetButtonObjectByPosition(eventSystem, graphicRaycaster, (Vector2)currentHitPosition);
-                OnTriggerDown?.Invoke((Vector2)currentHitPosition, buttonObject);
-            }
-            else if(triggerResult.bChanged && !triggerResult.bState)
-            {
-                var buttonObject = OverlayUtil.GetButtonObjectByPosition(eventSystem, graphicRaycaster, (Vector2)currentHitPosition);
-                OnTriggerUp?.Invoke((Vector2)currentHitPosition, buttonObject);
-            }
+        if(triggerResult.bChanged && triggerResult.bState && isOnOverlay)
+        {
+            var buttonObject = OverlayUtil.GetButtonObjectByPosition(eventSystem, graphicRaycaster, (Vector2)currentHitPosition);
+            OnTriggerDown?.Invoke((Vector2)currentHitPosition, buttonObject);
+        }
+        else if(triggerResult.bChanged && !triggerResult.bState)
+        {
+            var buttonObject = isOnOverlay ? OverlayUtil.GetButtonObjectByPosition(eventSystem, graphicRaycaster, (Vector2)currentHitPosition) : null;
+            OnTriggerUp?.Invoke(isOnOverlay ? (Vector2)currentHitPosition : lastHitPosition, buttonObject);
         }
     }
 

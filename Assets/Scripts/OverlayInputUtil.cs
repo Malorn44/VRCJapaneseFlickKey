@@ -199,6 +199,34 @@ namespace OverlayInputUtil
             {'Y', "y"},
             {'Z', "z"}
         };
+
+        // A tap on ゛゜小 turns the last kana into its next form and wraps round (は → ば → ぱ → は).
+        // The cycles are polykey's packs/ja/modify.json (MIT); katakana use the same cycles.
+        private static readonly string[] modifyCycles =
+        {
+            "あぁ", "いぃ", "うぅゔ", "えぇ", "おぉ",
+            "かが", "きぎ", "くぐ", "けげ", "こご",
+            "さざ", "しじ", "すず", "せぜ", "そぞ",
+            "ただ", "ちぢ", "つっづ", "てで", "とど",
+            "はばぱ", "ひびぴ", "ふぶぷ", "へべぺ", "ほぼぽ",
+            "やゃ", "ゆゅ", "よょ", "わゎ"
+        };
+
+        public static Dictionary<char, char> modifyCycleDictionary = BuildModifyCycles();
+
+        private static Dictionary<char, char> BuildModifyCycles()
+        {
+            var table = new Dictionary<char, char>();
+            foreach(var cycle in modifyCycles)
+            {
+                foreach(var offset in new[] { 0, 0x60 }) // hiragana, then the same katakana (あ U+3042 → ア U+30A2)
+                {
+                    for(var i = 0; i < cycle.Length; i++)
+                        table[(char)(cycle[i] + offset)] = (char)(cycle[(i + 1) % cycle.Length] + offset);
+                }
+            }
+            return table;
+        }
     }
     public static class SmartPhoneInputUtil
     {
@@ -221,7 +249,7 @@ namespace OverlayInputUtil
             { SmartPhoneKeyType.N, new List<string>       { "な", "に", "ぬ", "ね", "の" } },
             { SmartPhoneKeyType.H, new List<string>       { "は", "ひ", "ふ", "へ", "ほ" } },
             { SmartPhoneKeyType.M, new List<string>       { "ま", "み", "む", "め", "も" } },
-            { SmartPhoneKeyType.Y, new List<string>       { "や", "(", "ゆ",  ")", "よ" } },
+            { SmartPhoneKeyType.Y, new List<string>       { "や", "「", "ゆ", "」", "よ" } },
             { SmartPhoneKeyType.R, new List<string>       { "ら", "り", "る", "れ", "ろ" } },
             { SmartPhoneKeyType.DAKUTEN, new List<string> { "小", "゛", "ー", "゜" } },
             { SmartPhoneKeyType.W, new List<string>       { "わ", "を", "ん", "～" } },
@@ -236,11 +264,11 @@ namespace OverlayInputUtil
             { SmartPhoneKeyType.T, new List<string>       { "タ", "チ", "ツ", "テ", "ト" } },
             { SmartPhoneKeyType.N, new List<string>       { "ナ", "ニ", "ヌ", "ネ", "ノ" } },
             { SmartPhoneKeyType.H, new List<string>       { "ハ", "ヒ", "フ", "ヘ", "ホ" } },
-            { SmartPhoneKeyType.M, new List<string>       { "マ", "ミ", "ム", "ヌ", "モ" } },
-            { SmartPhoneKeyType.Y, new List<string>       { "ヤ", "{", "ユ",  "}", "ヨ" } },
+            { SmartPhoneKeyType.M, new List<string>       { "マ", "ミ", "ム", "メ", "モ" } },
+            { SmartPhoneKeyType.Y, new List<string>       { "ヤ", "「", "ユ", "」", "ヨ" } },
             { SmartPhoneKeyType.R, new List<string>       { "ラ", "リ", "ル", "レ", "ロ" } },
-            { SmartPhoneKeyType.DAKUTEN, new List<string> { "゛", "小", "[", "゜" } },
-            { SmartPhoneKeyType.W, new List<string>       { "ワ", "ヲ", "]", "ン" } },
+            { SmartPhoneKeyType.DAKUTEN, new List<string> { "小", "゛", "ー", "゜" } },
+            { SmartPhoneKeyType.W, new List<string>       { "ワ", "ヲ", "ン", "～" } },
             { SmartPhoneKeyType.SYMBOL, new List<string>  { "ー", ".", "!?", "￥" } }
         };
 

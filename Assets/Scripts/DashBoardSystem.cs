@@ -100,11 +100,6 @@ public class DashBoardSystem : MonoBehaviour
         }
     }
 
-    public void OnClickButton()
-    {
-        Debug.Log("Pressed");
-    }
-
     private void OnApplicationQuit()
     {
         OverlayUtil.DestroyOverlay(dashboardHandle);

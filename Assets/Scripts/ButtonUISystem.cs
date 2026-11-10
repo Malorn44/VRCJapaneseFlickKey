@@ -10,11 +10,9 @@ public class ButtonUISystem : MonoBehaviour
     [SerializeField] GameObject hiraganaButtonParent;
     [SerializeField] GameObject katakanaButtonParent;
     [SerializeField] GameObject alphabetButtonParent;
-    [SerializeField] GameObject cursorButtonParent;
-    [SerializeField] GameObject transLiterateButtonParent;
-    [SerializeField] GameObject enterButton;
-    [SerializeField] GameObject copyButton;
     [SerializeField] TextMeshProUGUI sendButtonText;
+    [SerializeField] TextMeshProUGUI transLiterateButtonText; // 変換 / 次変換 / 空白
+    [SerializeField] TextMeshProUGUI enterButtonText;         // 確定 / 送信
 
     public void ChangeSendButtonText(MainSystemUtil.SendTarget sendTarget)
     {
@@ -61,27 +59,9 @@ public class ButtonUISystem : MonoBehaviour
         }
     }
 
-    public void SetCursorButtonVisible()
+    public void SetKeyLabels(string transLiterateLabel, string enterLabel)
     {
-        transLiterateButtonParent.SetActive(false);
-        cursorButtonParent.SetActive(true);
-    }
-
-    public void SetTransLiterateButtonVisible()
-    {
-        cursorButtonParent.SetActive(false);
-        transLiterateButtonParent.SetActive(true);
-    }
-
-    public void SetEnterButtonVisible()
-    {
-        copyButton.SetActive(false);
-        enterButton.SetActive(true);
-    }
-
-    public void SetCopyButtonVisible()
-    {
-        enterButton.SetActive(false);
-        copyButton.SetActive(true);
+        transLiterateButtonText.text = transLiterateLabel;
+        enterButtonText.text = enterLabel;
     }
 }

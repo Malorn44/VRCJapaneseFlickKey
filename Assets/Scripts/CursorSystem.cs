@@ -9,7 +9,6 @@ public class CursorSystem : MonoBehaviour
     public GameObject cursorObject;
     [SerializeField] private OverlaySystem overlaySystem;
     [SerializeField] private ActionSystem actionSystem;
-    private ulong overlayHandle;
 
     void Start()
     {

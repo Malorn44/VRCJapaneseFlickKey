@@ -38,16 +38,18 @@ public class SmartPhoneInputSystem : MonoBehaviour
                 var hitPositionDiff = (Vector2)hitPosition - triggerDownPosition;
                 var x = Mathf.Abs(hitPositionDiff.x);
                 var y = Mathf.Abs(hitPositionDiff.y);
-                if(x >= y && x >= mainSystem.GetDragThreshold())
+                // As polykey: a tap until the pointer is the threshold away (in any direction), then the nearest axis.
+                var isFlick = hitPositionDiff.magnitude >= mainSystem.GetDragThreshold();
+                if(x >= y && isFlick)
                 {
                     if(hitPositionDiff.x < 0) currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.LEFT;
                     else currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.RIGHT;
                     ShowSubKeyIndex(currentButtonPosition);
                 }
-                else if(y > x && y >= mainSystem.GetDragThreshold())
+                else if(y > x && isFlick)
                 {
                     if(hitPositionDiff.y > 0) currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.TOP;
-                    else if(currentSubKeyCount == subButton.Count) currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.BOTTOM;
+                    else currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.BOTTOM;
                     ShowSubKeyIndex(currentButtonPosition);
                 }
                 else
@@ -56,11 +58,7 @@ public class SmartPhoneInputSystem : MonoBehaviour
                     ShowAllSubkey();
                 }
             }
-            else
-            {
-                isMainButtonPressed = false;
-                HideAllSubkey();
-            }
+            // Off the overlay the flick keeps the direction it had; the release decides.
         }
     }
 
@@ -101,7 +99,8 @@ public class SmartPhoneInputSystem : MonoBehaviour
                     }
                 }
             }
-            else textManagementSystem.AddText(keys[(int)currentButtonPosition]);
+            // A key with no kana in the flicked direction (down on わ, 、 or ゛゜小) types nothing.
+            else if((int)currentButtonPosition < keys.Count) textManagementSystem.AddText(keys[(int)currentButtonPosition]);
             currentButtonPosition = SmartPhoneInputUtil.ButtonPosition.CENTER;
             HideAllSubkey();
         }
@@ -112,8 +111,7 @@ public class SmartPhoneInputSystem : MonoBehaviour
         for (int i = 0; i < currentSubKeyCount; i++)
         {
             //ButtonPositionのCENTERは使わないので1減らす
-            if(i != (int)index-1) subButton[i].SetActive(false);
-            else subButton[i].SetActive(true);
+            subButton[i].SetActive(i == (int)index-1);
         }
     }
 
