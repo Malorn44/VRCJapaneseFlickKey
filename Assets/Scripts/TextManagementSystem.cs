@@ -193,7 +193,7 @@ public class TextManagementSystem : MonoBehaviour
         // Use the groups only if they cover the reading exactly; otherwise stay with the reading.
         if(segments != null && segments.Count > 0 && string.Concat(segments.Select(s => s.reading)) == writingText)
         {
-            groups = segments.Select(s => new Group { reading = s.reading, candidates = s.candidates }).ToList();
+            groups = segments.Select(s => new Group { reading = s.reading, candidates = candidateSystem.Displayable(s.candidates) }).ToList();
         }
         Render();
     }

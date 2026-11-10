@@ -29,12 +29,14 @@ public class CandidateSystem : MonoBehaviour
     private int latestRequest;
     private int currentPicked = -1;
     private Color prefabFill, prefabText; // the candidate button's own colours, for VRCJI's own look
+    private TMP_FontAsset font;           // what the candidates and the text box are drawn with
 
     void Start()
     {
         if(ThemeSystem.Instance != null) ThemeSystem.Instance.ThemeChanged += RecolorCandidates;
         prefabFill = candidateButtonPrefab.GetComponent<Image>().color;
         prefabText = candidateButtonPrefab.GetComponentInChildren<TMP_Text>(true).color;
+        font = candidateButtonPrefab.GetComponentInChildren<TMP_Text>(true).font;
         defaultCandidateParentPosition = candidateTransform.anchoredPosition;
         actionSystem.OnTriggerDown += TriggerDown;
         actionSystem.OnTriggerUp += TriggerUp;
@@ -111,7 +113,9 @@ public class CandidateSystem : MonoBehaviour
         // A newer reading was typed while this one was converting: its reply would be stale.
         if(request != latestRequest || segments == null || segments.Count == 0) return;
         // The candidates are the first segment's; picking one replaces that much of the reading.
-        var (reading, candidates) = segments[0];
+        var reading = segments[0].reading;
+        var candidates = Displayable(segments[0].candidates);
+        if(candidates.Count == 0) return;
         CreateCandidateButtons(candidates, -1, index =>
         {
             DestroyCandidateObjects();
@@ -119,6 +123,13 @@ public class CandidateSystem : MonoBehaviour
             MozcConverter.Learn(reading, candidates[index]);
             textManagementSystem.TextTransLiterate(candidates[index], reading.Length);
         });
+    }
+
+    // The candidates the font can draw. Mozc also suggests emoji, which it can't: they'd be empty boxes.
+    public List<string> Displayable(List<string> candidates)
+    {
+        if(font == null) return candidates;
+        return candidates.Where(c => font.HasCharacters(c, out uint[] _, true, true)).ToList();
     }
 
     // While converting: the focused group's candidates, with the picked one highlighted and in view.
