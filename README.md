@@ -6,7 +6,7 @@ VRChatで日本語入力をサポートするアプリケーションです。
 テキストチャット、ウィンドウへのテキスト送信ができます。
 
 動作にはWindows、SteamVRが必須となります。
-また同梱のunitypackageを使用する場合、Modular Avatarの導入が必要です。
+アバターのAction Menuから呼び出すには、tkxp200さんの[VRCJapaneseInputter v2.1.0](https://github.com/tkxp200/VRCJapaneseInputter/releases/tag/v2.1.0)にあるunitypackage（VRCJapaneseInputter.unitypackage）がそのまま使えます。使用にはModular Avatarの導入が必要です。
 
 ## 使い方
 

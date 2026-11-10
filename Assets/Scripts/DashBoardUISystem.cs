@@ -18,7 +18,14 @@ public class DashBoardUISystem : MonoBehaviour
     [SerializeField] GameObject joystickActiveGround;
     [SerializeField] GameObject transLiterateActiveGround;
     [SerializeField] GameObject aboutObject;
+    [SerializeField] TextMeshProUGUI titleText;
     private bool isAboutActive = false;
+
+    // The settings title: the app's name and version, as the build sets them.
+    void Awake()
+    {
+        titleText.text = $"{Application.productName} <size=70%><pos=80%>v{Application.version}</pos></size>";
+    }
 
     public void ChangeTrackHandUI(ETrackedControllerRole trackHand)
     {

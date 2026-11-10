@@ -2550,6 +2550,7 @@ MonoBehaviour:
   joystickActiveGround: {fileID: 1708233811}
   transLiterateActiveGround: {fileID: 357979566}
   aboutObject: {fileID: 1663182069}
+  titleText: {fileID: 367854179}
 --- !u!1 &93861667
 GameObject:
   m_ObjectHideFlags: 0
@@ -6200,7 +6201,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: VRCJapaneseInputter <size=70%><pos=80%>v2.1.0</pos></size>
+  m_text: VRCJapaneseFlickKey <size=70%><pos=80%>v1.0.0</pos></size>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a41616d678ad2ec43abdeb14e1a828c9, type: 2}
   m_sharedMaterial: {fileID: -6983458972381495562, guid: a41616d678ad2ec43abdeb14e1a828c9, type: 2}
@@ -25746,8 +25747,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u5404\u30E9\u30A4\u30BB\u30F3\u30B9\u306FLICENSES\u306B\u8A18\u8F09\u3055\u308C\u3066\u3044\u307E\u3059\u3002\nVRCJapaneseInputter\u306FMIT\u30E9\u30A4\u30BB\u30F3\u30B9\u3067\u516C\u958B\u3055\u308C\u3066\u3044\u307E\u3059\u3002\nCopyRight
-    (c) 2025 kars"
+  m_text: "\u5404\u30E9\u30A4\u30BB\u30F3\u30B9\u306FLICENSES\u306B\u8A18\u8F09\u3055\u308C\u3066\u3044\u307E\u3059\u3002\nVRCJapaneseFlickKey\u306FMIT\u30E9\u30A4\u30BB\u30F3\u30B9\u3067\u516C\u958B\u3055\u308C\u3066\u3044\u307E\u3059\u3002\nCopyright (c) 2025 kars, 2026 Mara Schwartz"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a41616d678ad2ec43abdeb14e1a828c9, type: 2}
   m_sharedMaterial: {fileID: -6983458972381495562, guid: a41616d678ad2ec43abdeb14e1a828c9, type: 2}

@@ -25,7 +25,7 @@ public class DashBoardSystem : MonoBehaviour
     void Start()
     {
         OverlaySystemUtil.InitOpenVR();
-        (dashboardHandle, thumbnailHandle) = DashBoardUtil.CreateDashBoardOverlay("VRCJapaneseInputter_DBkey", "VRCJPInputter Setting");
+        (dashboardHandle, thumbnailHandle) = DashBoardUtil.CreateDashBoardOverlay("VRCJapaneseFlickKey_DBkey", "VRCJapaneseFlickKey");
         var filePath = Application.streamingAssetsPath + "/icon.png";
         DashBoardUtil.SetDashBoardIcon(thumbnailHandle, filePath);
 
